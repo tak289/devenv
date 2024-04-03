@@ -16,6 +16,7 @@ LABEL   description="Dev and build environment for AuD lecture."
 ARG     USERNAME=dev
 ARG     USER_UID=1111
 ARG     USER_GID=$USER_UID
+ARG     WORKSPACE="/workspace"
 
 ######## Build
 
@@ -67,6 +68,10 @@ RUN     mkdir $VIRTUAL_ENV
 COPY    requirements.txt $VIRTUAL_ENV/requirements.txt
 RUN     chown -R $USERNAME:$USERNAME $VIRTUAL_ENV && \
         chmod 755 -R $VIRTUAL_ENV
+
+# Create workspace base dir
+RUN     chown -R $USERNAME:$USERNAME $WORKSPACE && \
+        chmod 755 -R $WORKSPACE
 
 ## Switch to non-root
 USER    $USERNAME

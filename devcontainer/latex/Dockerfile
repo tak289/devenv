@@ -16,6 +16,7 @@ LABEL   description="Dev and build environment for LaTeX."
 ARG     USERNAME=dev
 ARG     USER_UID=1111
 ARG     USER_GID=$USER_UID
+ARG     WORKSPACE="/workspace"
 
 ######## Build
 
@@ -37,6 +38,10 @@ RUN     groupadd --gid $USER_GID $USERNAME && \
 # Allow sudo
 RUN     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Create workspace base dir
+RUN     chown -R $USERNAME:$USERNAME $WORKSPACE && \
+        chmod 755 -R $WORKSPACE
 
 ## Switch to non-root
 USER    $USERNAME
