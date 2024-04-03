@@ -71,6 +71,7 @@ RUN     chown -R $USERNAME:$USERNAME $VIRTUAL_ENV && \
         chmod 755 -R $VIRTUAL_ENV
 
 # Create workspace base dir
+RUN     mkdir $WORKSPACE
 RUN     chown -R $USERNAME:$USERNAME $WORKSPACE && \
         chmod 755 -R $WORKSPACE
 
