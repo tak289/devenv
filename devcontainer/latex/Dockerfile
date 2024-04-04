@@ -2,10 +2,11 @@
 ## LaTeX
 ##
 
+ARG     REPO=""
 ARG     DIST="ubuntu"
 ARG     VARIANT="noble"
 
-FROM    ${DIST}:${VARIANT}  AS buildenv
+FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
 
 LABEL   version="1.1.2"
 LABEL   description="Dev and build environment for LaTeX."
@@ -24,6 +25,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ## Update all packages
 RUN     apt-get -q update --fix-missing && apt-get -qy upgrade 
+RUN     apt-key update
 
 ## System packages
 RUN     apt-get -qy install --no-install-recommends \
