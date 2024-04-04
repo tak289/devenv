@@ -7,7 +7,7 @@ ARG     VARIANT="noble"
 
 FROM    ${DIST}:${VARIANT}  AS buildenv
 
-LABEL   version="1.1.0"
+LABEL   version="1.1.1"
 LABEL   description="Dev and build environment for LaTeX."
 LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
@@ -15,9 +15,8 @@ LABEL   description="Dev and build environment for LaTeX."
 
 ## Vars
 ARG     USERNAME=dev
-ARG     USER_UID=1111
+ARG     USER_UID=1000
 ARG     USER_GID=$USER_UID
-ARG     WORKSPACE="/workspace"
 
 ######## Build
 
@@ -35,6 +34,14 @@ RUN     apt-get -qy install --no-install-recommends \
 ## LaTeX
 RUN     apt-get -qy install --no-install-recommends \
         texlive-full
+
+## Additional applications
+RUN     apt-get -qy install --no-install-recommends \
+        gnuplot
+
+## Remove default system user
+COPY    removesystemuser.sh /opt/removesystemuser.sh
+RUN     /opt/removesystemuser.sh
 
 ## Setup non-root dev user
 ENV     HOME /home/$USERNAME
