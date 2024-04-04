@@ -36,7 +36,7 @@ jobs:
         build-args: |
           DIST=ubuntu
           VARIANT=noble
-        tags: takker289/devenv:fomaud:ubuntu:noble
+        tags: takker289/devenv:fomaud-ubuntu.noble
     - name: Build and push ubuntu:jammy
       uses: docker/build-push-action@v5
       with:
@@ -45,8 +45,8 @@ jobs:
         build-args: |
           DIST=ubuntu
           VARIANT=jammy
-        tags: takker289/devenv:fomaud:ubuntu:jammy
-    - name: Build and push fomaud:debian:bookworm
+        tags: takker289/devenv:fomaud-ubuntu.jammy
+    - name: Build and push fomaud-debian.bookworm
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
@@ -54,8 +54,8 @@ jobs:
         build-args: |
           DIST=debian
           VARIANT=bookworm
-        tags: takker289/devenv:fomaud:debian:bookworm
-    - name: Build and push fomaud:debian:trixie
+        tags: takker289/devenv:fomaud-debian.bookworm
+    - name: Build and push fomaud-debian.trixie
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
@@ -63,8 +63,8 @@ jobs:
         build-args: |
           DIST=debian
           VARIANT=trixie
-        tags: takker289/devenv:fomaud:debian:trixie
-    - name: Build and push fomaud:debian:stable
+        tags: takker289/devenv:fomaud-debian.trixie
+    - name: Build and push fomaud-debian.stable
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
@@ -72,4 +72,4 @@ jobs:
         build-args: |
           DIST=debian
           VARIANT=stable
-        tags: takker289/devenv:fomaud:debian:stable
+        tags: takker289/devenv:fomaud-debian.stable

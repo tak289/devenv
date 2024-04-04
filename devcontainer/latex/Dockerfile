@@ -7,7 +7,7 @@ ARG     VARIANT="noble"
 
 FROM    ${DIST}:${VARIANT}  AS buildenv
 
-LABEL   version="1.1.1"
+LABEL   version="1.1.2"
 LABEL   description="Dev and build environment for LaTeX."
 LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
@@ -33,7 +33,8 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## LaTeX
 RUN     apt-get -qy install --no-install-recommends \
-        texlive-full
+        texlive-full \
+        texlive-fonts-extra
 
 ## Additional applications
 RUN     apt-get -qy install --no-install-recommends \
