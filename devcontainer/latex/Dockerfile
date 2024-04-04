@@ -24,8 +24,7 @@ ARG     USER_GID=$USER_UID
 ENV DEBIAN_FRONTEND=noninteractive
 
 ## Update all packages
-RUN     apt-get -q update --fix-missing && apt-get -qy upgrade 
-RUN     apt-key update
+RUN     apt-get -q update --fix-missing && apt-get -qy upgrade
 
 ## System packages
 RUN     apt-get -qy install --no-install-recommends \
