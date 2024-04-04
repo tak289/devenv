@@ -39,7 +39,7 @@ RUN     apt-get -qy install --no-install-recommends \
 ## Setup non-root dev user
 ENV     HOME /home/$USERNAME
 RUN     groupadd --gid $USER_GID $USERNAME && \
-        useradd --uid $USER_UID --gid $USER_GID --create-home --home-dir $HOME $USERNAME
+        useradd --uid $USER_UID --gid $USER_GID --create-home --home-dir $HOME --shell /bin/bash $USERNAME
 # Allow sudo
 RUN     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME
