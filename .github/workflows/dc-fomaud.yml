@@ -9,6 +9,9 @@ on:
   pull_request:
     branches:
       - '*'
+  schedule:
+    - cron: "42 4 * * *"
+  workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
@@ -25,9 +28,24 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
+    - name: Build and push ubuntu-noble
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
         push: true
-        tags: takker289/devenv:fomaud
+        build-args: DIST=ubuntu VARIANT=noble
+        tags: takker289/devenv:fomaud-ubuntu-noble
+    - name: Build and push ubuntu-jammy
+      uses: docker/build-push-action@v5
+      with:
+        context: "{{defaultContext}}:devcontainer/fomaud"
+        push: true
+        build-args: DIST=ubuntu VARIANT=jammy
+        tags: takker289/devenv:fomaud-ubuntu-jammy
+    - name: Build and push fomaud-debian-stable
+      uses: docker/build-push-action@v5
+      with:
+        context: "{{defaultContext}}:devcontainer/fomaud"
+        push: true
+        build-args: DIST=debian VARIANT=stable
+        tags: takker289/devenv:fomaud-debian-stable

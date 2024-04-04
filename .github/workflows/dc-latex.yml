@@ -9,6 +9,9 @@ on:
   pull_request:
     branches:
       - '*'
+  schedule:
+    - cron: "44 4 * * *"
+  workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
@@ -25,9 +28,17 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push
+    - name: Build and push latex-debian-stable
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/latex"
         push: true
-        tags: takker289/devenv:latex
+        build-args: DIST=debian VARIANT=stable
+        tags: takker289/devenv:latex-debian-stable
+    - name: Build and push latex-ubuntu-noble
+      uses: docker/build-push-action@v5
+      with:
+        context: "{{defaultContext}}:devcontainer/latex"
+        push: true
+        build-args: DIST=debian VARIANT=stable
+        tags: takker289/devenv:latex-ubuntu-noble

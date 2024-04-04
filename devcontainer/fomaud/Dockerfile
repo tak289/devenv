@@ -2,11 +2,12 @@
 ## AuD
 ##
 
-# FROM    debian:stable  AS buildenv
-# FROM    ubuntu:jammy  AS buildenv
-FROM    ubuntu:noble  AS buildenv
+ARG     DIST="ubuntu"
+ARG     VARIANT="noble"
 
-LABEL   version="1.0.0"
+FROM    ${DIST}:${VARIANT}  AS buildenv
+
+LABEL   version="1.1.0"
 LABEL   description="Dev and build environment for AuD lecture."
 LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
@@ -16,7 +17,6 @@ LABEL   description="Dev and build environment for AuD lecture."
 ARG     USERNAME=dev
 ARG     USER_UID=1111
 ARG     USER_GID=$USER_UID
-ARG     WORKSPACE="/workspace"
 
 ######## Build
 
@@ -59,32 +59,20 @@ RUN     apt-get -qy install --no-install-recommends \
         python3-pip
 ENV     VIRTUAL_ENV=/opt/venv
 
-# ## Setup non-root dev user
-# ENV     HOME /home/$USERNAME
-# RUN     groupadd --gid $USER_GID $USERNAME && \
-#         useradd --uid $USER_UID --gid $USER_GID --create-home --home-dir $HOME $USERNAME
-# # Allow sudo
-# RUN     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-#         chmod 0440 /etc/sudoers.d/$USERNAME
+## Setup non-root dev user
+ENV     HOME /home/$USERNAME
+RUN     groupadd --gid $USER_GID $USERNAME && \
+        useradd --uid $USER_UID --gid $USER_GID --create-home --home-dir $HOME $USERNAME
+# Allow sudo
+RUN     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
+        chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Python - Create venv dir
 RUN     mkdir $VIRTUAL_ENV
 COPY    requirements.txt $VIRTUAL_ENV/requirements.txt
-# RUN     chown -R $USERNAME:$USERNAME $VIRTUAL_ENV && \
-#         chmod 755 -R $VIRTUAL_ENV
-
-# # Create workspace base dir
-# RUN     mkdir $WORKSPACE
-# RUN     chown -R $USERNAME:$USERNAME $WORKSPACE && \
-#         chmod 755 -R $WORKSPACE
-
-# ## Switch to non-root
-# WORKDIR $HOME
-# USER    $USERNAME
-# ENV     VIRTUAL_ENV=/opt/venv
 
 # Setting up virtual env
-RUN     python3 -m venv $VIRTUAL_ENV
+RUN     umask 0022 && python3 -m venv $VIRTUAL_ENV
 ENV     PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN     $VIRTUAL_ENV/bin/pip3 install -r $VIRTUAL_ENV/requirements.txt
