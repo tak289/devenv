@@ -37,7 +37,9 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## Additional applications
 RUN     apt-get -qy install --no-install-recommends \
-        gnuplot
+        gnuplot \
+        gnuplot-nox \
+        make
 
 ## Remove default system user
 COPY    removesystemuser.sh /opt/removesystemuser.sh

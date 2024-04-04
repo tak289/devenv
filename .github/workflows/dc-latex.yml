@@ -28,7 +28,25 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push latex-debian-stable
+    - name: Build and push latex:debian:bookworm
+      uses: docker/build-push-action@v5
+      with:
+        context: "{{defaultContext}}:devcontainer/latex"
+        push: true
+        build-args: |
+          DIST=debian
+          VARIANT=bookworm
+        tags: takker289/devenv:latex:debian:bookworm
+    - name: Build and push latex:debian:trixie
+      uses: docker/build-push-action@v5
+      with:
+        context: "{{defaultContext}}:devcontainer/latex"
+        push: true
+        build-args: |
+          DIST=debian
+          VARIANT=trixie
+        tags: takker289/devenv:latex:debian:trixie
+    - name: Build and push latex:debian:stable
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/latex"
@@ -36,13 +54,4 @@ jobs:
         build-args: |
           DIST=debian
           VARIANT=stable
-        tags: takker289/devenv:latex-debian-stable
-    - name: Build and push latex-ubuntu-noble
-      uses: docker/build-push-action@v5
-      with:
-        context: "{{defaultContext}}:devcontainer/latex"
-        push: true
-        build-args: |
-          DIST=ubuntu
-          VARIANT=noble
-        tags: takker289/devenv:latex-ubuntu-noble
+        tags: takker289/devenv:latex:debian:stable
