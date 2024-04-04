@@ -33,19 +33,25 @@ jobs:
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
         push: true
-        build-args: DIST=ubuntu VARIANT=noble
+        build-args: |
+          DIST=ubuntu
+          VARIANT=noble
         tags: takker289/devenv:fomaud-ubuntu-noble
     - name: Build and push ubuntu-jammy
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
         push: true
-        build-args: DIST=ubuntu VARIANT=jammy
+        build-args: |
+          DIST=ubuntu
+          VARIANT=jammy
         tags: takker289/devenv:fomaud-ubuntu-jammy
     - name: Build and push fomaud-debian-stable
       uses: docker/build-push-action@v5
       with:
         context: "{{defaultContext}}:devcontainer/fomaud"
         push: true
-        build-args: DIST=debian VARIANT=stable
+        build-args: |
+          DIST=debian
+          VARIANT=stable
         tags: takker289/devenv:fomaud-debian-stable
