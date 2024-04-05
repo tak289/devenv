@@ -82,5 +82,5 @@ jobs:
             JAVA_VARIANT=${{ matrix.JAVA_VARIANT }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            ${{ env.GITHUB_REPOSITORY }}${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+            ${{ env.GITHUB_REPOSITORY }}/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
             ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_REPO }}:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}

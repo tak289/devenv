@@ -79,5 +79,5 @@ jobs:
             VARIANT=${{ matrix.VARIANT }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            ${{ env.GITHUB_REPOSITORY }}${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+            ${{ env.GITHUB_REPOSITORY }}/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
             ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_REPO }}:${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
