@@ -31,6 +31,7 @@ RUN     apt-get -q update --fix-missing && apt-get -qy upgrade
 ## System packages
 RUN     apt-get -qy install --no-install-recommends \
         sudo \
+        adduser \
         git \
         bash
 
