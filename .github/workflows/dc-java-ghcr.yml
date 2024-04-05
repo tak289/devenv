@@ -24,10 +24,10 @@ jobs:
         include:
           - DIST: debian
             VARIANT: stable
-            JAVA: 17
+            JAVA_VERSION: 17
           - DIST: debian
             VARIANT: trixie
-            JAVA: 17
+            JAVA_VERSION: 17
     name: Push Java images to ghcr.io
     runs-on: ubuntu-latest
     permissions:
@@ -58,6 +58,6 @@ jobs:
           build-args: |
             DIST=${{ matrix.DIST }}
             VARIANT=${{ matrix.VARIANT }}
-            JAVA=${{ matrix.JAVA }}
+            JAVA_VERSION=${{ matrix.JAVA_VERSION }}
           tags: ghcr.io/tak289/devenv:java${{ matrix.JAVA }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
           labels: ${{ steps.meta.outputs.labels }}

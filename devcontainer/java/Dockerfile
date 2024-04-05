@@ -3,12 +3,15 @@
 ##
 
 ARG     REPO=""
-ARG     DIST="ubuntu"
-ARG     VARIANT="noble"
-ARG     JAVA="17"
+ARG     DIST="debian"
+ARG     VARIANT="bookworm-slim"
+ARG     JAVA_VERSION="17"
+ARG     USERNAME=dev
+ARG     USER_UID=1000
+ARG     USER_GID=$USER_UID
 
-#FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
-FROM    debian:bookworm-slim as buildenv
+FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
+#FROM    debian:bookworm-slim as buildenv
 
 LABEL   version="1.0.1"
 LABEL   description="Dev and build environment for Java environment."
@@ -16,14 +19,15 @@ LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
 LABEL   description="Dev and build environment for Java."
 
-## Vars
-ARG     USERNAME=dev
-ARG     USER_UID=1000
-ARG     USER_GID=$USER_UID
+## Vars // emptied after FROM!
+ARG     USERNAME
+ARG     USER_UID
+ARG     USER_GID
+ARG     JAVA_VERSION
 
 ######## Build
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV     DEBIAN_FRONTEND=noninteractive
 
 ## Update all packages
 RUN     apt-get -q update --fix-missing && apt-get -qy upgrade
@@ -36,7 +40,7 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## Java
 RUN     apt-get -qy install --no-install-recommends \
-        openjdk-$JAVA-jdk \
+        openjdk-${JAVA_VERSION}-jdk \
         maven
 
 ## Remove default system user
@@ -51,4 +55,4 @@ RUN     groupadd --gid $USER_GID $USERNAME && \
 RUN     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME
 
-ENV DEBIAN_FRONTEND=dialog
+ENV     DEBIAN_FRONTEND=dialog
