@@ -1,17 +1,18 @@
 ##
-## LaTeX
+## Java
 ##
 
 ARG     REPO=""
 ARG     DIST="debian"
 ARG     VARIANT="bookworm-slim"
+ARG     JAVA_VENDOR="openjdk"
 ARG     JAVA_VERSION="17"
+ARG     JAVA_VARIANT="jdk"
 ARG     USERNAME=dev
 ARG     USER_UID=1000
 ARG     USER_GID=$USER_UID
 
 FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
-#FROM    debian:bookworm-slim as buildenv
 
 LABEL   version="1.0.1"
 LABEL   description="Dev and build environment for Java environment."
@@ -23,7 +24,9 @@ LABEL   description="Dev and build environment for Java."
 ARG     USERNAME
 ARG     USER_UID
 ARG     USER_GID
+ARG     JAVA_VENDOR
 ARG     JAVA_VERSION
+ARG     JAVA_VARIANT
 
 ######## Build
 
@@ -40,7 +43,7 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## Java
 RUN     apt-get -qy install --no-install-recommends \
-        openjdk-${JAVA_VERSION}-jdk \
+        ${JAVA_VENDOR}-${JAVA_VERSION}-${JAVA_VARIANT} \
         maven
 
 ## Remove default system user

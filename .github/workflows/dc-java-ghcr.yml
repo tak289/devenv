@@ -1,4 +1,4 @@
-name: devcontainer-java
+name: devcontainer-java-ghcr.io
 
 on:
   push:
@@ -18,17 +18,21 @@ env:
 
 jobs:
   push_java_to_ghcr:
+    name: Push Java images to ghcr.io
     strategy:
       matrix:
         DIST: [debian]
         include:
           - DIST: debian
             VARIANT: stable
+            JAVA_VENDOR: openjdk
             JAVA_VERSION: 17
+            JAVA_VARIANT: jdk
           - DIST: debian
             VARIANT: trixie
+            JAVA_VENDOR: openjdk
             JAVA_VERSION: 17
-    name: Push Java images to ghcr.io
+            JAVA_VARIANT: jdk
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -58,6 +62,8 @@ jobs:
           build-args: |
             DIST=${{ matrix.DIST }}
             VARIANT=${{ matrix.VARIANT }}
+            JAVA_VENDOR=${{ matrix.JAVA_VENDOR }}
             JAVA_VERSION=${{ matrix.JAVA_VERSION }}
-          tags: ghcr.io/tak289/devenv:java${{ matrix.JAVA }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+            JAVA_VARIANT=${{ matrix.JAVA_VARIANT }}
+          tags: ghcr.io/tak289/devenv:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
           labels: ${{ steps.meta.outputs.labels }}
