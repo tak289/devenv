@@ -36,7 +36,7 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## Java
 RUN     apt-get -qy install --no-install-recommends \
-        openjdk-${JAVA}-jdk \
+        openjdk-$JAVA-jdk \
         maven
 
 ## Remove default system user
