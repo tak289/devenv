@@ -1,0 +1,63 @@
+name: devcontainer-java
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - '*'
+  schedule:
+    - cron: "48 4 * * *"
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  push_java_to_ghcr:
+    strategy:
+      matrix:
+        DIST: [debian]
+        include:
+          - DIST: debian
+            VARIANT: stable
+            JAVA: 17
+          - DIST: debian
+            VARIANT: trixie
+            JAVA: 17
+    name: Push Java images to ghcr.io
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push devenv:java${{ matrix.JAVA }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: "{{defaultContext}}:devcontainer/java"
+          push: true
+          build-args: |
+            DIST=${{ matrix.DIST }}
+            VARIANT=${{ matrix.VARIANT }}
+            JAVA=${{ matrix.JAVA }}
+          tags: ghcr.io/tak289/devenv:java${{ matrix.JAVA }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+          labels: ${{ steps.meta.outputs.labels }}

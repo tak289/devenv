@@ -5,11 +5,12 @@
 ARG     REPO=""
 ARG     DIST="ubuntu"
 ARG     VARIANT="noble"
+ARG     JAVA="17"
 
 #FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
 FROM    debian:bookworm-slim as buildenv
 
-LABEL   version="1.0.0"
+LABEL   version="1.0.1"
 LABEL   description="Dev and build environment for Java environment."
 LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
@@ -35,7 +36,8 @@ RUN     apt-get -qy install --no-install-recommends \
 
 ## Java
 RUN     apt-get -qy install --no-install-recommends \
-        openjdk-17-jdk
+        openjdk-${JAVA}-jdk \
+        maven
 
 ## Remove default system user
 COPY    removesystemuser.sh /opt/removesystemuser.sh

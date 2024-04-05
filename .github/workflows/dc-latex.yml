@@ -1,23 +1,24 @@
 name: devcontainer-latex
 
 on:
-  # push:
-  #   branches:
-  #     - '*'
-  #   tags:
-  #     - 'v[0-9]+.[0-9]+.[0-9]+'
-  # pull_request:
-  #   branches:
-  #     - '*'
-  # schedule:
-  #   - cron: "44 4 * * *"
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - '*'
+  schedule:
+    - cron: "44 4 * * *"
   workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  docker:
+  push_docker_to_dockerhub:
+    name: Push LaTeX images to dockerhub
     runs-on: ubuntu-latest
     steps:
     - name: Set up Docker Buildx
