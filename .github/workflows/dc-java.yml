@@ -10,7 +10,7 @@ on:
     branches:
       - '*'
   schedule:
-    - cron: "44 4 * * *"
+    - cron: "48 4 * * *"
   workflow_dispatch:
 
 env:
@@ -45,13 +45,17 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            takker289/devenv:java17-debian.bookwork
+            takker289/devenv:java17-debian.bookworm
             ghcr.io/${{ github.repository }}
 
       - name: Build and push Docker images
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: .
+          context: "{{defaultContext}}:devcontainer/java"
           push: true
+          build-args: |
+            DIST=debian
+            VARIANT=bookworm
+          #tags: takker289/devenv:java17-debian.bookworm
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
