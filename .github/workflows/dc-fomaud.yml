@@ -1,0 +1,83 @@
+name: devcontainer-fomaud
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - '*'
+  schedule:
+    - cron: "42 4 * * *"
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+  IMAGE_BASENAME: fomaud
+  DOCKERHUB_USER: takker289
+  DOCKERHUB_REPO: devenv
+  GITHUB_REPOSITORY: ghcr.io
+  GITHUB_USER: tak289
+  GITHUB_REPO: devenv
+
+jobs:
+  push_fomaud_to_repositories:
+    name: Push ${IMAGE_BASENAME} images to dockerhub
+    strategy:
+      matrix:
+        DIST: [debian, ubuntu]
+        include:
+          - DIST: debian
+            VARIANT: stable
+          - DIST: debian
+            VARIANT: bookworm
+          - DIST: debian
+            VARIANT: trixie
+          - DIST: ubuntu
+            VARIANT: jammy
+          - DIST: ubuntu
+            VARIANT: noble
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.GITHUB_REPOSITORY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push ${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+        uses: docker/build-push-action@v5
+        with:
+          context: "{{defaultContext}}:devcontainer/${{ env.IMAGE_BASENAME }}"
+          push: true
+          build-args: |
+            DIST=${{ matrix.DIST }}
+            VARIANT=${{ matrix.VARIANT }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.GITHUB_REPOSITORY }}${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+            ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_REPO }}:${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}

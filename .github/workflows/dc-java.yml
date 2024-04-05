@@ -1,4 +1,4 @@
-name: devcontainer-java-ghcr.io
+name: devcontainer-java
 
 on:
   push:
@@ -15,10 +15,16 @@ on:
 
 env:
   BUILD_TYPE: Release
+  IMAGE_BASENAME: java
+  DOCKERHUB_USER: takker289
+  DOCKERHUB_REPO: devenv
+  GITHUB_REPOSITORY: ghcr.io
+  GITHUB_USER: tak289
+  GITHUB_REPO: devenv
 
 jobs:
-  push_java_to_ghcr:
-    name: Push Java images to ghcr.io
+  push_java_to_repositories:
+    name: Push ${IMAGE_BASENAME} images to repositories
     strategy:
       matrix:
         DIST: [debian]
@@ -38,13 +44,22 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
-          registry: ghcr.io
+          registry: ${{ env.GITHUB_REPOSITORY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -54,10 +69,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push devenv:java${{ matrix.JAVA }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+      - name: Build and push ${{ env.IMAGE_BASENAME }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: "{{defaultContext}}:devcontainer/java"
+          context: "{{defaultContext}}:devcontainer/${{ env.IMAGE_BASENAME }}"
           push: true
           build-args: |
             DIST=${{ matrix.DIST }}
@@ -65,5 +80,7 @@ jobs:
             JAVA_VENDOR=${{ matrix.JAVA_VENDOR }}
             JAVA_VERSION=${{ matrix.JAVA_VERSION }}
             JAVA_VARIANT=${{ matrix.JAVA_VARIANT }}
-          tags: ghcr.io/tak289/devenv:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
           labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.GITHUB_REPOSITORY }}${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
+            ${{ env.DOCKERHUB_USER }}/${{ env.DOCKERHUB_REPO }}:${{ matrix.JAVA_VENDOR }}${{ matrix.JAVA_VERSION }}-${{ matrix.DIST }}.${{ matrix.VARIANT }}
