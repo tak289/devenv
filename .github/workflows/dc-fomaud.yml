@@ -24,7 +24,7 @@ env:
 
 jobs:
   push_fomaud_to_repositories:
-    name: Push ${IMAGE_BASENAME} images to dockerhub
+    name: Push fomaud images to dockerhub
     strategy:
       matrix:
         include:

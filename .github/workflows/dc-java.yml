@@ -24,7 +24,7 @@ env:
 
 jobs:
   push_java_to_repositories:
-    name: Push ${IMAGE_BASENAME} images to repositories
+    name: Push java images to repositories
     strategy:
       matrix:
         include:

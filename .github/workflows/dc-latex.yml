@@ -24,7 +24,7 @@ env:
 
 jobs:
   push_latex_to_repositories:
-    name: Push ${IMAGE_BASENAME} images to dockerhub
+    name: Push latex images to dockerhub
     strategy:
       matrix:
         include:
