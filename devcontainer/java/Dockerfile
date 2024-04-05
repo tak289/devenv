@@ -14,11 +14,13 @@ ARG     USER_GID=$USER_UID
 
 FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
 
-LABEL   version="1.0.1"
-LABEL   description="Dev and build environment for Java environment."
-LABEL   com.example.vendor="tak289"
-LABEL   org.opencontainers.image.authors="tak289"
-LABEL   description="Dev and build environment for Java."
+LABEL   org.opencontainers.image.title="java"
+LABEL   org.opencontainers.image.version="1.2.0"
+LABEL   org.opencontainers.image.authors="tak289 <50550259+tak289@users.noreply.github.com>"
+LABEL   org.opencontainers.image.description="Dev and build environment for Java development."
+LABEL   org.opencontainers.image.source=https://github.com/tak289/devenv
+LABEL   org.opencontainers.image.licenses=MIT
+LABEL   org.opencontainers.image.revision="${GITHUB_SHA}"
 
 ## Vars // emptied after FROM!
 ARG     USERNAME
