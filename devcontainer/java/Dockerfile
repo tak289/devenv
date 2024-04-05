@@ -6,13 +6,14 @@ ARG     REPO=""
 ARG     DIST="ubuntu"
 ARG     VARIANT="noble"
 
-FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
+#FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
+FROM    debian:bookworm-slim as buildenv
 
-LABEL   version="1.1.2"
-LABEL   description="Dev and build environment for LaTeX."
+LABEL   version="1.0.0"
+LABEL   description="Dev and build environment for Java environment."
 LABEL   com.example.vendor="tak289"
 LABEL   org.opencontainers.image.authors="tak289"
-LABEL   description="Dev and build environment for LaTeX."
+LABEL   description="Dev and build environment for Java."
 
 ## Vars
 ARG     USERNAME=dev
@@ -32,17 +33,9 @@ RUN     apt-get -qy install --no-install-recommends \
         git \
         bash
 
-## LaTeX
+## Java
 RUN     apt-get -qy install --no-install-recommends \
-        texlive-latex-recommended \
-        texlive-fonts-extra \
-        texlive-full
-
-## Additional applications
-RUN     apt-get -qy install --no-install-recommends \
-        gnuplot \
-        gnuplot-nox \
-        make
+        openjdk-17-jdk
 
 ## Remove default system user
 COPY    removesystemuser.sh /opt/removesystemuser.sh

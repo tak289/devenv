@@ -1,23 +1,23 @@
 name: devcontainer-fomaud
 
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-  pull_request:
-    branches:
-      - '*'
-  schedule:
-    - cron: "42 4 * * *"
+  # push:
+  #   branches:
+  #     - '*'
+  #   tags:
+  #     - 'v[0-9]+.[0-9]+.[0-9]+'
+  # pull_request:
+  #   branches:
+  #     - '*'
+  # schedule:
+  #   - cron: "42 4 * * *"
   workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  docker:
+  push_to_registries:
     runs-on: ubuntu-latest
     steps:
     - name: Set up Docker Buildx
@@ -28,6 +28,14 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Log in to the Github Container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build and push ubuntu:noble
       uses: docker/build-push-action@v5
       with:
