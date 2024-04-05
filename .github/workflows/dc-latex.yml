@@ -27,7 +27,6 @@ jobs:
     name: Push ${IMAGE_BASENAME} images to dockerhub
     strategy:
       matrix:
-        DIST: [debian, ubuntu]
         include:
           - DIST: debian
             VARIANT: stable
