@@ -53,7 +53,8 @@ RUN     apt-get -qy install --no-install-recommends \
         valgrind \
         gdb \
         doxygen \
-        graphviz
+        graphviz \
+        libgraphviz-dev
 
 ## Python
 RUN     apt-get -qy install --no-install-recommends \
