@@ -6,7 +6,7 @@ ARG     REPO=""
 ARG     DIST="debian"
 ARG     VARIANT="bookworm-slim"
 ARG     JAVA_VENDOR="openjdk"
-ARG     JAVA_VERSION="17"
+ARG     JAVA_VERSION="21"
 ARG     JAVA_VARIANT="jdk"
 ARG     USERNAME=dev
 ARG     USER_UID=1000
@@ -15,7 +15,7 @@ ARG     USER_GID=$USER_UID
 FROM    ${REPO}${DIST}:${VARIANT}  AS buildenv
 
 LABEL   org.opencontainers.image.title="java"
-LABEL   org.opencontainers.image.version="1.2.0"
+LABEL   org.opencontainers.image.version="1.3.0"
 LABEL   org.opencontainers.image.authors="tak289 <50550259+tak289@users.noreply.github.com>"
 LABEL   org.opencontainers.image.description="Dev and build environment for Java development."
 LABEL   org.opencontainers.image.source=https://github.com/tak289/devenv

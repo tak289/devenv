@@ -31,12 +31,12 @@ jobs:
           - DIST: debian
             VARIANT: trixie
             JAVA_VENDOR: openjdk
-            JAVA_VERSION: 17
+            JAVA_VERSION: 21
             JAVA_VARIANT: jdk
           - DIST: ubuntu
             VARIANT: resolute
             JAVA_VENDOR: openjdk
-            JAVA_VERSION: 17
+            JAVA_VERSION: 21
             JAVA_VARIANT: jdk
     runs-on: ubuntu-latest
     permissions:
