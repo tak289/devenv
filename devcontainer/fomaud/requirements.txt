@@ -1,8 +1,9 @@
 pandas
 numpy
+scipy
 jupyter
 matplotlib
 networkx
 pyvis
-graphviz
-ipywidgets
+# needs apt-get install libgraphviz-dev
+pygraphviz
