@@ -29,11 +29,6 @@ jobs:
       matrix:
         include:
           - DIST: debian
-            VARIANT: stable
-            JAVA_VENDOR: openjdk
-            JAVA_VERSION: 17
-            JAVA_VARIANT: jdk
-          - DIST: debian
             VARIANT: trixie
             JAVA_VENDOR: openjdk
             JAVA_VERSION: 17
