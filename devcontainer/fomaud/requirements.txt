@@ -4,3 +4,5 @@ jupyter
 matplotlib
 networkx
 pyvis
+graphviz
+ipywidgets

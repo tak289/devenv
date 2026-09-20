@@ -37,7 +37,7 @@ jobs:
           - DIST: ubuntu
             VARIANT: jammy
           - DIST: ubuntu
-            VARIANT: noble
+            VARIANT: resolute
     runs-on: ubuntu-latest
     permissions:
       contents: read
